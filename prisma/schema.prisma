@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  String    @id @default(cuid())
+  name                String
+  email               String    @unique
+  weeklyWorkoutTarget Int       @default(5)
+  createdAt           DateTime  @default(now())
+  programs            Program[]
+  workoutSessions     WorkoutSession[]
+  cardioSessions      CardioSession[]
+  personalBests       ExercisePersonalBest[]
+}
+
+model Program {
+  id               String            @id @default(cuid())
+  userId           String
+  name             String
+  description      String            @default("")
+  isActive         Boolean           @default(false)
+  createdAt        DateTime          @default(now())
+  user             User              @relation(fields: [userId], references: [id])
+  workoutTemplates WorkoutTemplate[]
+}
+
+model WorkoutTemplate {
+  id           String                    @id @default(cuid())
+  programId    String
+  name         String
+  focus        String                    @default("")
+  muscleGroups String                    @default("[]")
+  orderIndex   Int                       @default(0)
+  program      Program                   @relation(fields: [programId], references: [id])
+  exercises    WorkoutTemplateExercise[]
+  sessions     WorkoutSession[]
+}
+
+model WorkoutTemplateExercise {
+  id                String          @id @default(cuid())
+  workoutTemplateId String
+  exerciseId        String
+  orderIndex        Int
+  prescribedSets    Int
+  repRangeMin       Int
+  repRangeMax       Int
+  rirTarget         Int             @default(2)
+  notes             String          @default("")
+  workoutTemplate   WorkoutTemplate @relation(fields: [workoutTemplateId], references: [id])
+  exercise          Exercise        @relation(fields: [exerciseId], references: [id])
+}
+
+model Exercise {
+  id                   String                    @id @default(cuid())
+  name                 String                    @unique
+  primaryMuscleGroup   String
+  secondaryMuscleGroups String                   @default("[]")
+  equipment            String                    @default("Barbell")
+  instructions         String                    @default("")
+  mediaUrl             String                    @default("")
+  templateExercises    WorkoutTemplateExercise[]
+  setLogs              WorkoutSetLog[]
+  personalBests        ExercisePersonalBest[]
+}
+
+model WorkoutSession {
+  id                 String          @id @default(cuid())
+  userId             String
+  workoutTemplateId  String?
+  scheduledDate      DateTime        @default(now())
+  status             String          @default("in_progress")
+  startedAt          DateTime?
+  completedAt        DateTime?
+  durationMinutes    Int?
+  notes              String          @default("")
+  user               User            @relation(fields: [userId], references: [id])
+  workoutTemplate    WorkoutTemplate? @relation(fields: [workoutTemplateId], references: [id])
+  setLogs            WorkoutSetLog[]
+}
+
+model WorkoutSetLog {
+  id               String         @id @default(cuid())
+  workoutSessionId String
+  exerciseId       String
+  setNumber        Int
+  targetRepsMin    Int            @default(0)
+  targetRepsMax    Int            @default(0)
+  actualReps       Int?
+  weight           Float?
+  isCompleted      Boolean        @default(false)
+  completedAt      DateTime?
+  workoutSession   WorkoutSession @relation(fields: [workoutSessionId], references: [id])
+  exercise         Exercise       @relation(fields: [exerciseId], references: [id])
+}
+
+model CardioSession {
+  id              String   @id @default(cuid())
+  userId          String
+  activityType    String
+  date            DateTime @default(now())
+  durationMinutes Int
+  distance        Float?
+  calories        Int?
+  intensity       String   @default("moderate")
+  notes           String   @default("")
+  user            User     @relation(fields: [userId], references: [id])
+}
+
+model ExercisePersonalBest {
+  id         String   @id @default(cuid())
+  userId     String
+  exerciseId String
+  weight     Float
+  reps       Int
+  volume     Float
+  achievedAt DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+  @@unique([userId, exerciseId])
+}
