@@ -22,7 +22,7 @@ export function getThisWeekRange() {
 
 export function calculateStreak(dates: Date[]): number {
   if (!dates.length) return 0
-  const unique = [...new Set(dates.map(d => d.toISOString().split('T')[0]))].sort().reverse()
+  const unique = Array.from(new Set(dates.map(d => d.toISOString().split('T')[0]))).sort().reverse()
   let streak = 0
   let current = new Date()
   current.setHours(0, 0, 0, 0)
