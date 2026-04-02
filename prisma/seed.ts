@@ -18,24 +18,24 @@ async function main() {
 
   // Exercises
   const exercises = [
-    { name: "Barbell Bench Press", primaryMuscleGroup: "Chest", equipment: "Barbell", instructions: "Lie on bench, lower bar to chest, press up" },
-    { name: "Incline Dumbbell Press", primaryMuscleGroup: "Chest", equipment: "Dumbbell", instructions: "Set bench to 30-45°, press dumbbells up" },
-    { name: "Barbell Back Squat", primaryMuscleGroup: "Quads", equipment: "Barbell", instructions: "Bar on traps, squat to parallel, drive up" },
-    { name: "Romanian Deadlift", primaryMuscleGroup: "Hamstrings", equipment: "Barbell", instructions: "Hinge at hips, lower bar down shins, return" },
-    { name: "Pull-Up", primaryMuscleGroup: "Back", equipment: "Bodyweight", instructions: "Hang from bar, pull chin over bar" },
-    { name: "Barbell Row", primaryMuscleGroup: "Back", equipment: "Barbell", instructions: "Hinge forward, row bar to lower chest" },
-    { name: "Overhead Press", primaryMuscleGroup: "Shoulders", equipment: "Barbell", instructions: "Press bar from shoulder height overhead" },
-    { name: "Lateral Raise", primaryMuscleGroup: "Shoulders", equipment: "Dumbbell", instructions: "Raise dumbbells to shoulder height laterally" },
-    { name: "Barbell Curl", primaryMuscleGroup: "Biceps", equipment: "Barbell", instructions: "Curl bar from hip to shoulder" },
-    { name: "Tricep Pushdown", primaryMuscleGroup: "Triceps", equipment: "Cable", instructions: "Push cable attachment down, extending elbows" },
-    { name: "Leg Press", primaryMuscleGroup: "Quads", equipment: "Machine", instructions: "Press platform away, don't lock knees" },
-    { name: "Hip Thrust", primaryMuscleGroup: "Glutes", equipment: "Barbell", instructions: "Shoulders on bench, drive hips up" },
+    { name: "Barbell Bench Press", primaryMuscleGroup: "Chest", equipment: "Barbell", instructions: "Lie on bench, lower bar to chest, press up", mediaUrl: "https://www.youtube.com/watch?v=vcBig73ojpE" },
+    { name: "Incline Dumbbell Press", primaryMuscleGroup: "Chest", equipment: "Dumbbell", instructions: "Set bench to 30-45°, press dumbbells up", mediaUrl: "https://www.youtube.com/watch?v=8iPEnn-ltC8" },
+    { name: "Barbell Back Squat", primaryMuscleGroup: "Quads", equipment: "Barbell", instructions: "Bar on traps, squat to parallel, drive up", mediaUrl: "https://www.youtube.com/watch?v=ultWZbUMPL8" },
+    { name: "Romanian Deadlift", primaryMuscleGroup: "Hamstrings", equipment: "Barbell", instructions: "Hinge at hips, lower bar down shins, return", mediaUrl: "https://www.youtube.com/watch?v=JCXUYuzwNrM" },
+    { name: "Pull-Up", primaryMuscleGroup: "Back", equipment: "Bodyweight", instructions: "Hang from bar, pull chin over bar", mediaUrl: "https://www.youtube.com/watch?v=eGo4IYlbE5g" },
+    { name: "Barbell Row", primaryMuscleGroup: "Back", equipment: "Barbell", instructions: "Hinge forward, row bar to lower chest", mediaUrl: "https://www.youtube.com/watch?v=FWJR5Ve8bnQ" },
+    { name: "Overhead Press", primaryMuscleGroup: "Shoulders", equipment: "Barbell", instructions: "Press bar from shoulder height overhead", mediaUrl: "https://www.youtube.com/watch?v=2yjwXTZQDDI" },
+    { name: "Lateral Raise", primaryMuscleGroup: "Shoulders", equipment: "Dumbbell", instructions: "Raise dumbbells to shoulder height laterally", mediaUrl: "https://www.youtube.com/watch?v=3VcKaXpzqRo" },
+    { name: "Barbell Curl", primaryMuscleGroup: "Biceps", equipment: "Barbell", instructions: "Curl bar from hip to shoulder", mediaUrl: "https://www.youtube.com/watch?v=kwG2ipFRgfo" },
+    { name: "Tricep Pushdown", primaryMuscleGroup: "Triceps", equipment: "Cable", instructions: "Push cable attachment down, extending elbows", mediaUrl: "https://www.youtube.com/watch?v=2-LAMcpzODU" },
+    { name: "Leg Press", primaryMuscleGroup: "Quads", equipment: "Machine", instructions: "Press platform away, don't lock knees", mediaUrl: "https://www.youtube.com/watch?v=IZxyjW7MPJQ" },
+    { name: "Hip Thrust", primaryMuscleGroup: "Glutes", equipment: "Barbell", instructions: "Shoulders on bench, drive hips up", mediaUrl: "https://www.youtube.com/watch?v=xDmFkJxPzeM" },
   ]
 
   for (const ex of exercises) {
     await prisma.exercise.upsert({
       where: { name: ex.name },
-      update: {},
+      update: { mediaUrl: ex.mediaUrl },
       create: ex,
     })
   }
