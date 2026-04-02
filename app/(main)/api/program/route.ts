@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { USER_ID, getThisWeekRange, calculateStreak, parseJsonArray } from '@/lib/utils'
