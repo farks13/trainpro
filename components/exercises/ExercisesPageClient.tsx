@@ -86,7 +86,7 @@ export function ExercisesClient() {
   }, [])
 
   const muscleGroups = useMemo(() => {
-    return [...new Set(exercises.map(e => e.primaryMuscleGroup))].sort()
+    return Array.from(new Set(exercises.map(e => e.primaryMuscleGroup))).sort()
   }, [exercises])
 
   const activeFilters = ['All', ...muscleGroups]
